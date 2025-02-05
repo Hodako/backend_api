@@ -7,6 +7,7 @@ exports.createArticle = async (req, res) => {
         const article = await Article.create(title, author, institution, abstract, content, tags);
         res.json(article);
     } catch (err) {
+        console.error('Error creating article:', err.message);
         res.status(400).json({ message: err.message });
     }
 };
@@ -16,6 +17,7 @@ exports.getArticles = async (req, res) => {
         const articles = await Article.findAll();
         res.json(articles);
     } catch (err) {
+        console.error('Error fetching articles:', err.message);
         res.status(400).json({ message: err.message });
     }
 };
@@ -27,6 +29,7 @@ exports.getArticle = async (req, res) => {
         await Article.updateViews(id);
         res.json(article);
     } catch (err) {
+        console.error('Error fetching article:', err.message);
         res.status(400).json({ message: err.message });
     }
 };
@@ -37,6 +40,7 @@ exports.addComment = async (req, res) => {
         const comment = await Article.addComment(articleId, userId, content);
         res.json(comment);
     } catch (err) {
+        console.error('Error adding comment:', err.message);
         res.status(400).json({ message: err.message });
     }
 };
@@ -47,6 +51,7 @@ exports.getComments = async (req, res) => {
         const comments = await Article.getComments(articleId);
         res.json(comments);
     } catch (err) {
+        console.error('Error fetching comments:', err.message);
         res.status(400).json({ message: err.message });
     }
 };
