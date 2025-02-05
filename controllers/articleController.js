@@ -4,7 +4,18 @@ const cloudinary = require('../config/cloudinary');
 exports.createArticle = async (req, res) => {
     const { title, author, institution, abstract, content, tags } = req.body;
     try {
-        const article = await Article.create(title, author, institution, abstract, content, tags);
+        let imageUrl = null;
+        if (req.file) {
+            const result = await cloudinary.uploader.upload_stream({
+                resource_type: 'image'
+            }, (error, result) => {
+                if (error) throw error;
+                return result;
+            }).end(req.file.buffer);
+            imageUrl = result.secure_url;
+        }
+
+        const article = await Article.create(title, author, institution, abstract, content, tags, imageUrl);
         res.json(article);
     } catch (err) {
         console.error('Error creating article:', err.message);
